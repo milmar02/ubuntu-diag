@@ -1,16 +1,22 @@
 FROM centos:7
 
 LABEL name="kube-diag" \
-    vendor="CentOS" \
-    os-version="7" \
+    vendor="Ubuntu" \
+    os-version="latest" \
     license="GPLv2" \
     build-date="20170717" \
     oc-client-version="v1.5.1-7b451fc-linux-64bit" \
     kubectl-version="1.7.0" \
-    maintainer="sahinerokan@gmail.com" 
+    maintainer="martin@2mnet.de" 
 
-RUN yum-config-manager --add-repo https://openresty.org/package/centos/openresty.repo \
-&& yum install -y \
+RUN apt-get -y install --no-install-recommends wget gnupg ca-certificates
+RUN wget -O - https://openresty.org/package/pubkey.gpg | sudo apt-key add -
+RUN echo "deb http://openresty.org/package/ubuntu $(lsb_release -sc) main" \
+| sudo tee /etc/apt/sources.list.d/openresty.list
+RUN apt-get update
+RUN apt-get -y install openresty
+RUN apt-get install -y libssl-dev perl make build-essential curl
+RUN ap-get install -y \
 wget \
 nmap \
 maven \
@@ -19,8 +25,6 @@ ping \
 telnet \
 curl \
 openssl \
-openresty \
-&& yum clean all \
 && wget -q https://storage.googleapis.com/kubernetes-release/release/v1.7.0/bin/linux/amd64/kubectl -O /bin/kubectl \
 && chmod 755 /bin/kubectl \
 && mkdir /bin/oc_client \
