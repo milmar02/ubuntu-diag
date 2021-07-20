@@ -11,17 +11,17 @@ LABEL name="ubuntu-diag" \
 
 RUN apt-get update
 RUN apt-get -y install --no-install-recommends wget gnupg ca-certificates
+RUN apt-get -y install software-properties-common
 RUN wget -O - https://openresty.org/package/pubkey.gpg | apt-key add -
-RUN echo "deb http://openresty.org/package/ubuntu $(lsb_release -sc) main" \
-| tee /etc/apt/sources.list.d/openresty.list
+RUN add-apt-repository -y "deb http://openresty.org/package/ubuntu $(lsb_release -sc) main"
+RUN apt-get update
 RUN apt-get -y install openresty
 RUN apt-get install -y libssl-dev perl make build-essential curl
-RUN ap-get install -y \
+RUN apt-get install -y \
 wget \
 nmap \
 maven \
 git \
-ping \
 telnet \
 curl \
 openssl \
@@ -47,4 +47,3 @@ USER root
 
 EXPOSE 8080
 ENTRYPOINT ["/entrypoint.sh"]
-
