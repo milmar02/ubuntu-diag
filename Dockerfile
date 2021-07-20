@@ -1,6 +1,6 @@
-FROM centos:7
+FROM ubuntu:latest
 
-LABEL name="kube-diag" \
+LABEL name="ubuntu-diag" \
     vendor="Ubuntu" \
     os-version="latest" \
     license="GPLv2" \
